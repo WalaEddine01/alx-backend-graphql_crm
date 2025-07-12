@@ -2,6 +2,7 @@
 
 # Resolve the absolute path of the current script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "Changing to project root from cwd: $SCRIPT_DIR"
 
 # Move to the root of the Django project (adjust if needed)
 cd "$SCRIPT_DIR/../.." || {
@@ -22,4 +23,8 @@ END
 )
 
 # Log with timestamp
-echo "$(date): Deleted $DELETED_COUNT inactive customers" >> /tmp/customer_cleanup_log.txt
+if [ -n "$DELETED_COUNT" ]; then
+    echo "$(date): Deleted $DELETED_COUNT inactive customers" >> /tmp/customer_cleanup_log.txt
+else
+    echo "$(date): No customers deleted" >> /tmp/customer_cleanup_log.txt
+fi
